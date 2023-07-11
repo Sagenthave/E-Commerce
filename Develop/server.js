@@ -14,3 +14,21 @@ app.use(routes);
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}!`);
 });
+
+// // Create a connection object
+// const sequelize = new Sequelize(
+//   // Database name
+//   '',
+//   // User
+//   'root',
+//   // Password
+//   'Sagenthave07',
+//   {
+//     // Database location
+//     host: 'localhost',
+//     dialect: 'mysql',
+//     port: 3306
+//   }
+// );
+
+// module.exports = sequelize;
