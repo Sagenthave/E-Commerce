@@ -50,7 +50,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// UPDATE A CATEGORY
+// UPDATE A CATEGORY (REVIEW WITH TA)
 router.put('/:id', async (req, res) => {
   // update a category by its `id` value
   try {

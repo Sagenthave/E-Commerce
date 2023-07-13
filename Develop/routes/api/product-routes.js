@@ -55,7 +55,7 @@ router.post('/', (req, res) => {
       if (req.body.tagIds.length) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
-            product_id: product.id,
+            id: product.id,
             tag_id,
           };
         });
@@ -91,7 +91,7 @@ router.put('/:id', (req, res) => {
             .filter((tag_id) => !productTagIds.includes(tag_id))
             .map((tag_id) => {
               return {
-                product_id: req.params.id,
+                id: req.params.id,
                 tag_id,
               };
             });

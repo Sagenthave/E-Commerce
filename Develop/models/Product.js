@@ -2,6 +2,7 @@
 const { Model, DataTypes } = require('sequelize');
 // import our database connection from config.js
 const sequelize = require('../config/connection');
+const Category = require('../models/Category');
 
 // Initialize Product model (table) by extending off Sequelize's Model class
 class Product extends Model {}
@@ -28,19 +29,19 @@ Product.init(
       }
     },
     stock: {
-      type: DataTypes.INTERGER,
+      type: DataTypes.INTEGER,
       allowNull: false, 
       validate: {
         isNumber: true
       }
     },
     category_id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false, //CAN THIS BE TRUE?
       references: {
-        model: 'category',
-        key: 'id',
-        unique: false
+        model: Category,
+        key: 'id'
+        //unique: false
       }
     }
   },
