@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
-
 // The `/api/products` endpoint
-
 // get all products
 router.get('/', async (req, res) => {
   // find all products
@@ -10,7 +8,7 @@ router.get('/', async (req, res) => {
   try {
     const productData = await Product.findAll({
       include: [{model: Category, Tag}]
-    }); 
+    });
     if (!productData) {
       res.status(404).json({ message: 'No product found with this id!' });
       return;
@@ -20,7 +18,6 @@ router.get('/', async (req, res) => {
     res.status(500).json(error);
   }
 });
-
 // get one product
 router.get('/:id', async (req, res) => {
   // find a single product by its `id`
@@ -29,17 +26,15 @@ router.get('/:id', async (req, res) => {
     const productData = await Product.findByPk(req.params.id, {
       include: [{ model: Category, Tag}]
     });
-
     if (!productData) {
       res.status(404).json({ message: 'No product found with this id!' });
       return;
-    }res.status(200).json(productData);
-
+    }
+    res.status(200).json(productData);
   } catch (err) {
-    res.status(404).json({ message: 'erro occured found with this id!' });
+    console.error(err);
   }
 });
-
 router.post('/', (req, res) => {
   /* req.body should look like this...
     {
@@ -55,7 +50,7 @@ router.post('/', (req, res) => {
       if (req.body.tagIds.length) {
         const productTagIdArr = req.body.tagIds.map((tag_id) => {
           return {
-            id: product.id,
+            product_id: product.id, // Use product.id instead of 'id'
             tag_id,
           };
         });
@@ -73,7 +68,6 @@ router.post('/', (req, res) => {
       res.status(400).json(err);
     });
 });
-
 // create new product
 // router.post('/', (req, res) => {
 //   /* req.body should look like this...
@@ -86,7 +80,6 @@ router.post('/', (req, res) => {
 //   */
 //   Product.create(req.body)
 //     .then((product) => {
-    
 //       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
 //       if (req.body.tagIds.length) {
 //         const productTagIdArr = req.body.tagIds.map((tag_id) => {
@@ -98,7 +91,6 @@ router.post('/', (req, res) => {
 //         return ProductTag.bulkCreate(productTagIdArr);
 //       }else{
 //         console.error("can't find the data")
-        
 //       }
 //       // if no product tags, just respond
 //       res.status(200).json(product);
@@ -109,7 +101,6 @@ router.post('/', (req, res) => {
 //       res.status(400).json(err);
 //     });
 // });
-
 // update product
 router.put('/:id', (req, res) => {
   // update product data
@@ -120,7 +111,6 @@ router.put('/:id', (req, res) => {
   })
     .then((product) => {
       if (req.body.tagIds && req.body.tagIds.length) {
-
         ProductTag.findAll({
           where: { product_id: req.params.id }
         }).then((productTags) => {
@@ -134,7 +124,6 @@ router.put('/:id', (req, res) => {
                 tag_id,
               };
             });
-
           // figure out which ones to remove
           const productTagsToRemove = productTags
             .filter(({ tag_id }) => !req.body.tagIds.includes(tag_id))
@@ -146,15 +135,13 @@ router.put('/:id', (req, res) => {
           ]);
         });
       }
-
-      return res.json(product);
+     return  res.status(200).json({message: 'Updated succesfully'});
     })
     .catch((err) => {
       // console.log(err);
       res.status(400).json(err);
     });
 });
-
 router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
   try {
@@ -162,16 +149,14 @@ router.delete('/:id', async (req, res) => {
       where: {
         id: req.params.id
       }
-    }); 
-
+    });
     if (!productData) {
       res.status(404).json({message: 'No product found with this ID'});
       return;
     }
-    res.status(200).json(productData);
+    res.status(200).json({message: 'Product deleted successfully'});
   } catch (error) {
     res.status(500).json(error);
   }
 });
-
 module.exports = router;
