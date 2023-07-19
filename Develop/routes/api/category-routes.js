@@ -77,6 +77,8 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+
+
 // DELETE A CATEGORY
 router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
